@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CMU Dance Poses</title>
+<style>
+  body { margin:0; overflow:hidden; background:#fcfbf8; }
+  canvas { display:block; }
+  #randomize { position:fixed; right:20px; top:20px; width:32px; height:32px; padding:6px; border:1px solid #cfcdc6;
+    border-radius:50%; background:none; color:#9a9890; cursor:pointer; transition:.2s; }
+  #randomize:hover { color:#1a1a1a; border-color:#1a1a1a; }
+  #about { position:fixed; left:0; top:0; bottom:0; width:min(680px, 54vw); box-sizing:border-box; overflow-y:auto; scrollbar-width:thin;
+    padding:0 clamp(24px, 5vw, 72px); display:flex; flex-direction:column; color:#1a1a1a; font:17px/1.65 "Iowan Old Style", Georgia, serif; }
+  #about .in { margin:auto 0; padding:48px 0; }
+  #about h1 { margin:0 0 28px; white-space:nowrap; font:400 clamp(30px, 4.2vw, 56px)/1.05 "Iowan Old Style", Georgia, serif; letter-spacing:-.02em; }
+  #about p { margin:0 0 32px; }
+  #about h2 { margin:0 0 14px; color:#9a9890; font:600 11px system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+  #about section { margin-bottom:28px; }
+  .list { display:flex; flex-wrap:wrap; gap:12px 22px; }
+  .p { display:inline-flex; align-items:center; gap:.5em; color:inherit; text-decoration:none; font-size:16px; }
+  .p span.n { border-bottom:1px solid #d8d6cf; transition:border-color .2s; }
+  .p:hover span.n { border-color:#1a1a1a; }
+  .ic { flex:none; width:1.7em; height:1.7em; border-radius:.5em; display:grid; place-items:center; background:linear-gradient(135deg, var(--a), var(--b));
+    box-shadow:0 2px 6px -1px color-mix(in srgb, var(--b) 55%, transparent); transition:transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .p:hover .ic { transform:rotate(-8deg) scale(1.18); }
+  .ic svg { width:62%; height:62%; fill:none; stroke:#fff; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+  .contact { display:flex; align-items:center; gap:18px; margin-top:36px; font:13px system-ui, sans-serif; letter-spacing:.04em; }
+  .contact a { color:inherit; text-decoration:none; }
+  .contact a.t { border-bottom:1px solid #cfcdc6; }
+  .contact a.t:hover { border-color:#1a1a1a; }
+  .contact .i { width:18px; height:18px; color:#9a9890; transition:color .2s; }
+  .contact .i:hover { color:#1a1a1a; }
+  .contact .i svg { display:block; width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+  .contact .i svg.f { fill:currentColor; stroke:none; }
+  @media (max-width:760px) {
+    #about { top:auto; width:auto; right:0; max-height:55vh; padding:0 24px; background:rgba(252,251,248,.92); font-size:15px; }
+    #about .in { margin:0; padding:20px 0 24px; }
+    #about h1 { font-size:30px; margin-bottom:12px; } #about p { margin-bottom:20px; }
+  }
+  #randomize svg { display:block; width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<button id="randomize" aria-label="Randomize outfit"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r=".6"/><circle cx="15" cy="15" r=".6"/><circle cx="12" cy="12" r=".6"/></svg></button>
+<main id="about"><div class="in">
+  <h1>Hi, I'm Orr Kislev</h1>
+  <p>
+    I'm a creative coder and developer, working where art, code and movement meet. I make
+    generative pieces and tools for the web, build products for clients, and never stop
+    studying. Here is some of what I've made.
+  </p>
+  <div id="projects"></div>
+  <div class="contact">
+    <a class="t" href="mailto:orrkislev@gmail.com">orrkislev@gmail.com</a>
+    <a class="i" href="https://x.com/orrkislev" target="_blank" rel="noopener noreferrer" aria-label="X"><svg class="f" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    <a class="i" href="https://github.com/orrkislev" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+  </div>
+</div></main>
+<script>
+// glyphs: stroke paths on a 24 grid
+const G = {
+  code: 'M16 18l6-6-6-6M8 6l-6 6 6 6',
+  shuffle: 'M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5',
+  wave: 'M22 12h-4l-3 9L9 3l-3 9H2',
+  phone: 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM12 18h.01',
+  calendar: 'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18',
+  star: 'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21.1 7 14.2 2 9.3l6.9-1z',
+  book: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5',
+  music: 'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
+  leaf: 'M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10zM2 21c0-3 1.9-5.5 6-7',
+  cube: 'M21 16V8l-9-5-9 5v8l9 5zM3.3 7 12 12l8.7-5M12 22V12',
+  bolt: 'M13 2 3 14h9l-1 8 10-12h-9z',
+  eye: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
+  heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z',
+  camera: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2zM12 10a4 4 0 1 0 0 8 4 4 0 0 0 0-8z',
+  planet: 'M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM3 15c-1.5-2.5 3-7.5 9-8.5M21 9c1.5 2.5-3 7.5-9 8.5',
+  flame: 'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 3-7 1 1 2 2 3 1 0-2-1-4 0-6z',
+  pencil: 'M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.500z',
+  sparkle: 'M12 2l2 7 7 3-7 3-2 7-2-7-7-3 7-3z',
+};
+// [name, url, glyph, colour a, colour b]. Only the first of each group is real so far; the rest
+// are placeholders for testing the layout.
+const PROJECTS = {
+  Personal: [
+    ['Creative Coding', 'https://creativecoding.orrkislev.work', 'code', '#ff8a5c', '#ff3d77'],
+    ['Serendipity Engine', 'https://serendipity.orrkislev.work', 'shuffle', '#8b6cff', '#2fb8ff'],
+    ['The Hear', 'https://the-hear.com', 'wave', '#13d6b0', '#3b82f6'],
+    ['Pocket Orchard', 'https://example.com', 'leaf', '#a3e635', '#16a34a'],
+    ['Tiny Orbits', 'https://example.com', 'planet', '#fbbf24', '#ef4444'],
+    ['Midnight Radio', 'https://example.com', 'music', '#a78bfa', '#ec4899'],
+    ['Paper Weather', 'https://example.com', 'bolt', '#67e8f9', '#6366f1'],
+  ],
+  Clients: [
+    ['Chamama', 'https://app.chamama.org', 'phone', '#ffc53d', '#fb5607'],
+    ['The Embodiment Conference', 'https://www.theembodimentconference.org', 'calendar', '#2dd4bf', '#0ea5e9'],
+    ['Studio Nori', 'https://example.com', 'eye', '#f472b6', '#9333ea'],
+    ['Salt & Ember', 'https://example.com', 'flame', '#fb923c', '#dc2626'],
+    ['Field Notes Co.', 'https://example.com', 'book', '#34d399', '#0f766e'],
+    ['Lumen Clinic', 'https://example.com', 'heart', '#fda4af', '#e11d48'],
+    ['Harbor Films', 'https://example.com', 'camera', '#94a3b8', '#334155'],
+  ],
+  School: [
+    ['Generative Typography', 'https://example.com', 'pencil', '#fde047', '#f97316'],
+    ['Sound Garden', 'https://example.com', 'music', '#6ee7b7', '#059669'],
+    ['Cellular Quilt', 'https://example.com', 'cube', '#c084fc', '#4f46e5'],
+    ['Night Sky Atlas', 'https://example.com', 'star', '#818cf8', '#1e1b4b'],
+    ['Gesture Mirror', 'https://example.com', 'eye', '#38bdf8', '#2563eb'],
+    ['Breath Machine', 'https://example.com', 'sparkle', '#f9a8d4', '#f43f5e'],
+  ],
+};
+document.getElementById('projects').innerHTML = Object.entries(PROJECTS).map(([group, items]) =>
+  `<section><h2>${group}</h2><div class="list">${items.map(([name, url, g, a, b]) =>
+    `<a class="p" href="${url}" target="_blank" rel="noopener noreferrer" style="--a:${a};--b:${b}">` +
+    `<span class="ic"><svg viewBox="0 0 24 24"><path d="${G[g]}"/></svg></span><span class="n">${name}</span></a>`).join('')}</div></section>`).join('');
+</script>
+<script type="module" src="sketch.js"></script>
+</body>
+</html>
