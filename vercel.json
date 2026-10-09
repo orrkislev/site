@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/:path((?!anim/|src/|sketch\\.js$).+)", "destination": "https://creativecoding.orrkislev.work/:path*", "permanent": false }
+  ]
+}

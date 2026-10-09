@@ -3,3 +3,5 @@ bvh/
 poses.json
 .DS_Store
 .vercel/
+.vercel
+.env*

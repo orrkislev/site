@@ -14,6 +14,8 @@
   #about .in { margin:auto 0; padding:48px 0; }
   #about h1 { margin:0 0 28px; white-space:nowrap; font:400 clamp(30px, 4.2vw, 56px)/1.05 "Iowan Old Style", Georgia, serif; letter-spacing:-.02em; }
   #about p { margin:0 0 32px; }
+  #about p a { color:inherit; text-decoration:none; border-bottom:1px solid #cfcdc6; transition:border-color .2s; }
+  #about p a:hover { border-color:#1a1a1a; }
   #about h2 { margin:0 0 14px; color:#9a9890; font:600 11px system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; }
   #about section { margin-bottom:28px; }
   .list { display:flex; flex-wrap:wrap; gap:12px 22px; }
@@ -52,8 +54,8 @@
   <h1>Hi, I'm Orr Kislev</h1>
   <p>
     I'm a creative coder and developer, working where art, code and movement meet. I make
-    generative pieces and tools for the web, build products for clients, and never stop
-    studying. Here is some of what I've made.
+    <a href="https://creativecoding.orrkislev.work">generative pieces</a> and tools for the web, build products for clients, and never stop
+    studying. Here is some of what I've made, and <a href="https://play.orrkislev.work">play</a> holds more sketches and explorations.
   </p>
   <div id="projects"></div>
   <div class="contact">
@@ -89,6 +91,7 @@ const G = {
 const PROJECTS = {
   Personal: [
     ['Creative Coding', 'https://creativecoding.orrkislev.work', 'code', '#ff8a5c', '#ff3d77'],
+    ['Play', 'https://play.orrkislev.work', 'sparkle', '#fde047', '#f97316'],
     ['Serendipity Engine', 'https://serendipity.orrkislev.work', 'shuffle', '#8b6cff', '#2fb8ff'],
     ['The Hear', 'https://the-hear.com', 'wave', '#13d6b0', '#3b82f6'],
     ['Pocket Orchard', 'https://example.com', 'leaf', '#a3e635', '#16a34a'],
