@@ -55,6 +55,16 @@
       "destination": "https://the-thing-rosy.vercel.app/:path*"
     },
     {
+      "source": "/work-life-design-research/",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://work-life-design-research.vercel.app/"
+    },
+    {
       "source": "/work-life-design-research/:path*",
       "has": [
         {
@@ -65,6 +75,16 @@
       "destination": "https://work-life-design-research.vercel.app/:path*"
     },
     {
+      "source": "/maker-motives/",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://maker-motives.vercel.app/"
+    },
+    {
       "source": "/maker-motives/:path*",
       "has": [
         {
@@ -72,7 +92,7 @@
           "value": "school.orrkislev.work"
         }
       ],
-      "destination": "https://maker-story.vercel.app/:path*"
+      "destination": "https://maker-motives.vercel.app/:path*"
     }
   ]
 }
