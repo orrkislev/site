@@ -1,5 +1,78 @@
 {
   "redirects": [
-    { "source": "/:path((?!anim/|src/|sketch\\.js$).+)", "destination": "https://creativecoding.orrkislev.work/:path*", "permanent": false }
+    {
+      "source": "/maker-motives",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "/maker-motives/",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://orrkislev.work",
+      "permanent": false
+    },
+    {
+      "source": "/:path((?!work-life-design-research|maker-motives).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://orrkislev.work",
+      "permanent": false
+    },
+    {
+      "source": "/:path((?!anim/|src/|sketch\\.js$|maap|_next/).+)",
+      "missing": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://creativecoding.orrkislev.work/:path*",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/_next/:path*",
+      "destination": "https://the-thing-rosy.vercel.app/_next/:path*"
+    },
+    {
+      "source": "/maap/:path*",
+      "destination": "https://the-thing-rosy.vercel.app/:path*"
+    },
+    {
+      "source": "/work-life-design-research/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://work-life-design-research.vercel.app/:path*"
+    },
+    {
+      "source": "/maker-motives/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://maker-story.vercel.app/:path*"
+    }
   ]
 }
