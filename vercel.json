@@ -85,6 +85,16 @@
       "destination": "https://maker-motives.vercel.app/"
     },
     {
+      "source": "/maker-motives/:path+/",
+      "has": [
+        {
+          "type": "host",
+          "value": "school.orrkislev.work"
+        }
+      ],
+      "destination": "https://maker-motives.vercel.app/:path+/index.html"
+    },
+    {
       "source": "/maker-motives/:path*",
       "has": [
         {
