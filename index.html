@@ -4,7 +4,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <meta charset="utf-8">
-<title>CMU Dance Poses</title>
+<title>Orr Kislev</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%231a1a1a'/%3E%3Cpath d='M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM12 9l3 3-3 3-3-3z' fill='none' stroke='%23fcfbf8' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
   body { margin:0; overflow:hidden; background:#fcfbf8; }
   canvas { display:block; }
@@ -95,9 +96,13 @@ const PROJECTS = {
     ['Work-Life Design Research', 'https://school.orrkislev.work/work-life-design-research', 'eye', '#a3e635', '#16a34a'],
     ['Maker Motives', 'https://school.orrkislev.work/maker-motives', 'snake', '#38bdf8', '#4f46e5'],
   ],
-  Clients: [
+  Art: [
+    ['Art', 'https://art.orrkislev.work', 'feather', '#fb923c', '#e11d48'],
+  ],
+  'Client Projects': [
     ['Chamama', 'https://app.chamama.org', 'diamond', '#ffc53d', '#fb5607'],
     ['The Embodiment Conference', 'https://www.theembodimentconference.org', 'tri', '#2dd4bf', '#0ea5e9'],
+    ['Molecule Typography', 'https://art.orrkislev.work/MoleculeTypography/', 'hourglass', '#c084fc', '#0891b2'],
   ],
 };
 document.getElementById('projects').innerHTML = Object.entries(PROJECTS).map(([group, items]) =>
