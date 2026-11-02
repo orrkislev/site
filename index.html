@@ -7,6 +7,7 @@
 <title>Orr Kislev</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%231a1a1a'/%3E%3Cpath d='M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM12 9l3 3-3 3-3-3z' fill='none' stroke='%23fcfbf8' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
+  ::selection { background:#1a1a1a; color:#fcfbf8; }
   body { margin:0; overflow:hidden; background:#fcfbf8; }
   canvas { display:block; }
   #randomize { position:fixed; right:20px; top:20px; width:32px; height:32px; padding:6px; border:1px solid #cfcdc6;
@@ -25,6 +26,13 @@
   .p { display:inline-flex; align-items:center; gap:.5em; color:inherit; text-decoration:none; font-size:16px; }
   .p span.n { border-bottom:1px solid #d8d6cf; transition:border-color .2s; }
   .p:hover span.n { border-color:#1a1a1a; }
+  #tip { position:fixed; z-index:5; width:min(340px, calc(100vw - 24px)); box-sizing:border-box; padding:16px 18px; border-radius:12px; background:#1a1a1a; color:#fcfbf8;
+    box-shadow:0 3px 10px rgba(0,0,0,.18); opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity .18s, transform .18s; }
+  #tip.on { opacity:1; transform:none; }
+  #tip b { display:block; margin-bottom:8px; font:400 23px/1 "Bebas Neue", sans-serif; letter-spacing:.02em; }
+  #tip p { margin:0; font:16px/1.5 "Iowan Old Style", Georgia, serif; }
+  #tip .sk { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  #tip .sk span { padding:4px 10px; border-radius:99px; background:rgba(252,251,248,.14); font:500 12px system-ui, sans-serif; letter-spacing:.02em; }
   .ic { flex:none; width:1.9em; height:1.9em; display:grid; place-items:center; transition:transform .25s cubic-bezier(.3,1.6,.5,1); }
   .p:hover .ic { transform:rotate(-8deg) scale(1.18); }
   .ic svg { width:100%; height:100%; fill:none; stroke:#1a1a1a; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
@@ -55,9 +63,8 @@
 <main id="about"><div class="in">
   <h1>Hi, I'm Orr Kislev</h1>
   <p>
-    I'm a designer, a creative coder, an educator, a developer, and a dad, working where art, code (and AI) meet. I make
-    <a href="https://creativecoding.orrkislev.work">generative pieces</a> and tools for the web, build products for clients, and never stop
-    studying. Here is some of what I've made, and <a href="https://play.orrkislev.work">play</a> holds more sketches and explorations.
+    A designer, creative coder and educator.<br>
+    Living in Utrecht. I make generative art, tools and products for the web.
   </p>
   <div id="projects"></div>
   <div class="contact">
@@ -80,35 +87,52 @@ const G = {
   cross: 'M12 1l3 5h-6zM12 23l3-5h-6zM1 12l5-3v6zM23 12l-5-3v6zM12 7v10M7 12h10M12 12v.01',
   eye: 'M2 12c4-8 16-8 20 0-4 8-16 8-20 0zM12 8l3 4-3 4-3-4zM12 1v3M5 3l2 3M19 3l-2 3M12 20v3',
   totem: 'M8 1h8v5H8zM5 8h14v5H5zM8 15h8v8H8zM10 3.5v.01M14 3.5v.01M2 10h3M19 10h3M12 17v4',
+  face: 'M4 17V10a8 8 0 0 1 16 0v7M8 7l1 2M12 6v2M16 7l-1 2M9.5 12v.01M14.5 12v.01M9.5 14.5q2.5 1.5 5 0M2 21q2-2 4 0t4 0 4 0 4 0 4 0',
   snake: 'M2 5c7-4 9 3 4 5s-2 6 6 5 6 6 10 6M20 3v.01',
 };
 // [name, url, glyph, colour a, colour b]. Only the first of each group is real so far; the rest
 // are placeholders for testing the layout.
 const PROJECTS = {
   Personal: [
-    ['Creative Coding', 'https://creativecoding.orrkislev.work', 'sun', '#ff8a5c', '#ff3d77'],
-    ['Play', 'https://play.orrkislev.work/soft', 'spiral', '#fde047', '#f97316'],
-    ['Serendipity Engine', 'https://serendipity.orrkislev.work', 'zig', '#8b6cff', '#2fb8ff'],
-    ['The Hear', 'https://the-hear.com', 'chevron', '#13d6b0', '#3b82f6'],
-    ['Maap', 'https://orrkislev.work/maap', 'totem', '#f472b6', '#9333ea'],
+    ['Creative Coding', 'https://creativecoding.orrkislev.work', 'sun', '#ff8a5c', '#ff3d77', "Discover, play, study and explore generative art and code-based sketches.", "Generative art · Creative coding · Visual experiments"],
+    ['Play', 'https://play.orrkislev.work/soft', 'spiral', '#fde047', '#f97316', "A soft playground of small interactive sketches.", "Interaction design · Creative coding · Sketching"],
+    ['Serendipity Engine', 'https://serendipity.orrkislev.work', 'zig', '#8b6cff', '#2fb8ff', "Tools and experiments that foster creativity and curiosity. A brain massage.", "Creative tools · Experimentation · Web development"],
+    ['The Hear', 'https://the-hear.com', 'chevron', '#13d6b0', '#3b82f6', "A newsstand with a brain. Explore headlines from news media around the world, by the minute.", "Product design · Full-stack web · Live data"],
+    ['webgpu-utils', 'https://orrkislev.github.io/webgpu-utils/docs/', 'face', '#a78bfa', '#ec4899', "A JavaScript library that makes creating code art with WebGPU easier.", "WebGPU · JavaScript · Library design · Documentation"],
+    ['Maap', 'https://orrkislev.work/maap', 'totem', '#f472b6', '#9333ea', "A design research tool for mapping stakeholders and comprehension.", "Design research · Information design · Web app"],
   ],
   School: [
-    ['Work-Life Design Research', 'https://school.orrkislev.work/work-life-design-research', 'eye', '#a3e635', '#16a34a'],
-    ['Maker Motives', 'https://school.orrkislev.work/maker-motives', 'snake', '#38bdf8', '#4f46e5'],
+    ['Work-Life Design Research', 'https://school.orrkislev.work/work-life-design-research#board', 'eye', '#a3e635', '#16a34a', "A design research case about making people's work and life better.", "Design research · Synthesis · Information design"],
+    ['Maker Motives', 'https://school.orrkislev.work/maker-motives', 'snake', '#38bdf8', '#4f46e5', "What makes people create a cool project? A bespoke dataset and a beautiful data story.", "Data collection · Data visualization · Storytelling"],
   ],
   Art: [
-    ['Art', 'https://art.orrkislev.work', 'feather', '#fb923c', '#e11d48'],
+    ['Art', 'https://art.orrkislev.work', 'feather', '#fb923c', '#e11d48', "Selected art and generative pieces.", "Generative art · Algorithms · Blockchain art"],
   ],
   'Client Projects': [
-    ['Chamama', 'https://app.chamama.org', 'diamond', '#ffc53d', '#fb5607'],
-    ['The Embodiment Conference', 'https://www.theembodimentconference.org', 'tri', '#2dd4bf', '#0ea5e9'],
-    ['Molecule Typography', 'https://art.orrkislev.work/MoleculeTypography/', 'hourglass', '#c084fc', '#0891b2'],
+    ['Chamama', 'https://app.chamama.org', 'diamond', '#ffc53d', '#fb5607', "An app for the staff and students of Chamama, a self-directed learning high school.", "Product design · Web app · Education"],
+    ['The Embodiment Conference', 'https://www.theembodimentconference.org', 'tri', '#2dd4bf', '#0ea5e9', "Website for The Embodiment Conference.", "Web development · Web design"],
+    ['Mulecular Typography', 'https://art.orrkislev.work/MoleculeTypography/', 'hourglass', '#c084fc', '#0891b2', "Letterforms built from molecule-like structures.", "Typography · Generative design · Creative coding"],
   ],
 };
 document.getElementById('projects').innerHTML = Object.entries(PROJECTS).map(([group, items]) =>
   `<section><h2>${group}</h2><div class="list">${items.map(([name, url, g, a, b]) =>
     `<a class="p" href="${url}" target="_blank" rel="noopener noreferrer" style="--a:${a};--b:${b}">` +
     `<span class="ic"><svg viewBox="0 0 24 24"><path d="${G[g]}"/></svg></span><span class="n">${name}</span></a>`).join('')}</div></section>`).join('');
+
+// shared hover popover, positioned in the viewport so the scrolling panel can't clip it
+const tip = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'tip' }));
+const all = Object.values(PROJECTS).flat();
+document.querySelectorAll('.p').forEach((el, i) => {
+  const [name, , , , , text, skills] = all[i];
+  el.onmouseenter = () => {
+    tip.innerHTML = `<b>${name}</b><p>${text}</p><div class="sk">${skills.split(' · ').map(k => `<span>${k}</span>`).join('')}</div>`;
+    const r = el.getBoundingClientRect(), h = tip.offsetHeight, w = tip.offsetWidth;
+    tip.style.left = Math.max(12, Math.min(r.left, innerWidth - w - 12)) + 'px';
+    tip.style.top = (r.bottom + 10 + h > innerHeight ? Math.max(12, r.top - 10 - h) : r.bottom + 10) + 'px';
+    tip.classList.add('on');
+  };
+  el.onmouseleave = () => tip.classList.remove('on');
+});
 </script>
 <script type="module" src="sketch.js"></script>
 </body>
