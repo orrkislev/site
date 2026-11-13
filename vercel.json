@@ -47,8 +47,16 @@
   ],
   "rewrites": [
     {
-      "source": "/maap/:path*",
-      "destination": "https://the-thing-rosy.vercel.app/maap/:path*"
+      "source": "/maap",
+      "destination": "https://the-thing-rosy.vercel.app/maap"
+    },
+    {
+      "source": "/maap/",
+      "destination": "https://the-thing-rosy.vercel.app/maap"
+    },
+    {
+      "source": "/maap/:path+",
+      "destination": "https://the-thing-rosy.vercel.app/maap/:path+"
     },
     {
       "source": "/work-life-design-research/",
